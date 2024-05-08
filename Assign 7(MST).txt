@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+class office{
+    int n;
+    int adjm[50][50]={0};
+    std::string office[50];
+
+    public:
+
+
+        void input(){
+            cout<<"Enter the no. of offices: ";
+            cin>>n;
+
+            for(int i=0;i<n;i++){
+                cout<<"Enter the name if office "<<i+1<<" :";
+                cin>>office[i];
+            }
+
+            for(int i=0;i<n;i++){
+                for(int j =i+1;j<n;j++){
+                    cout<<"Enter the cost from "<<office[i]<<" to "<<office[j]<<" :";
+                    cin>>adjm[i][j];
+                    adjm[j][i]=adjm[i][j];
+                }
+            }
+        }
+
+        void display(){
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    cout<<adjm[i][j]<<" ";
+                }
+                cout<<endl;
+            }
+        }
+
+        void prims(){
+            int visit[n],mincost=0, cost=0,minindex,count = n-1;
+            
+            for(int i=0;i<n;i++){
+                visit[i]=0;
+            }
+
+            cout<<office[0]<<"->";
+            visit[0]=1;
+
+            while(count--){
+                mincost=INT_MAX;
+                for(int i=0;i<n;i++){
+                    for(int j=0;j<n;j++){
+                        if(visit[i]==1 && visit[j]==0 && adjm[i][j]<mincost && adjm[i][j]!=0){
+                            mincost= adjm[i][j];
+                            minindex=j;
+
+                        }
+                    }
+                }
+                visit[minindex]=1;
+                cout<<office[minindex];
+                cost+=mincost;
+                cout<<"->";
+            };
+            cout<<endl;
+            cout<<"\nCost: "<<cost;
+            
+            
+
+        }
+};
+
+int main(){
+    office o;
+    o.input();
+    o.display();
+    o.prims();
+    return 0;
+}
+

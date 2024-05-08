@@ -1,0 +1,95 @@
+first = set(['US','INDIA','SEATTLE'])
+
+print(first)
+
+first.add('russia')
+print(first)
+first.remove('US')
+print(first)
+
+
+
+def insert(set1,data):
+    set1.add(data)
+    
+def delete(set1,data):
+    set1.remove(data)
+    
+def contains(set1,data):
+    for x in set1:
+        if(x==data):
+            print("Present")
+            return
+    print("Not Present")
+    
+    
+    
+def sizeof(set1):
+    i=0
+    for x in set1:
+        i+=1
+        
+    print("Size: ",i)
+    
+def intersection(set1,set2):
+
+    new= set()
+    for k in set1:
+        if (k in set2) :
+            new.add(k)
+    print(set2)
+    
+    
+    
+def union(set1,set2):
+    new = set()
+    
+    for k in set1:
+        new.add(k)
+    
+    for j in set2:
+        if(j not in set1):
+            new.add(j)
+            
+    
+    
+    print(new)
+    
+def diff(set1,set2):
+    if(len(set1)<len(set2)):
+        print("Empty set as the size of first is less than second set")
+        return
+    new = set1
+    
+    for k in set2:
+        if(k in set1):
+            new.remove(k)
+            
+
+    print(new)
+    
+def subset(set1,set2):
+    if(len(set1)>len(set2)):
+        for k in set2:
+            if(k not in set1):
+                print("Not a subset")
+                return
+            
+        print("Yes it's a subset")
+
+set1= set(['abcd','abc'])
+set2= set(['abcd'])
+
+
+subset(set1,set2)  
+sizeof(set2)
+intersection(set1,set2)
+union(set1,set2)
+contains(set1,'ab')
+diff(set1,set2)
+
+        
+        
+
+
+    

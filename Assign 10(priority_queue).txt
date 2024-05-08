@@ -1,0 +1,58 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+struct patient{
+    int priority;
+    std::string name;
+
+    patient(const std::string& name, int n):name(name), priority(n){}
+
+    bool operator<(const patient& other) const{
+        return priority>other.priority;
+
+    }
+
+
+};
+
+int main(){
+
+    priority_queue<patient> queue;
+    int n;
+    cout<<"Enter the no. of patients: ";
+    cin>>n;
+
+    for(int i=0;i<n;i++){
+        std::string name;
+        int priority;
+        cout<<"Enter the name of patient "<<i+1<<" :";
+        cin>>name;
+        cout<<"Enter 1(For Serious)\nEnter 2(For Non-Serious)\nEnter 3(For Regular Checkup)";
+        cin>>priority;
+
+        queue.emplace(name,priority);
+    }
+
+    cout<<"\nTreating patients: ";
+    while(!queue.empty()){
+        patient newone = queue.top();
+        queue.pop();
+
+        std::string prioritystat;
+        if(newone.priority==1){
+            prioritystat="Serious";
+        }
+        else if(newone.priority==2){
+            prioritystat="Non-Serious";
+        }
+        else{
+            prioritystat="Regular Checkup";
+        }
+
+        cout<<"\nPatient: "<<newone.name<<" \t"<<"Status: "<<prioritystat;
+
+    }
+    return 0;
+}

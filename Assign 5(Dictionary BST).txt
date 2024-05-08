@@ -1,0 +1,143 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+// Structure for dictionary node
+struct Node {
+    char key[50];
+    char meaning[100];
+    Node* left;
+    Node* right;
+    
+    Node(const char* k, const char* m) {
+        strcpy(key, k);
+        strcpy(meaning, m);
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to insert a new node into the dictionary BST
+void Insert(Node*& root, Node* temp) {
+    if (root == nullptr) {
+        root = temp;
+    } else {
+        int l1 = strlen(root->key);
+        int l2 = strlen(temp->key);
+        int l = min(l1, l2);
+        int i = 0;
+        while (i < l && root->key[i] == temp->key[i])
+            i++;
+        
+        if (i < l && root->key[i] > temp->key[i]) {
+            if (root->left == nullptr)
+                root->left = temp;
+            else
+                Insert(root->left, temp);
+        } else if (i < l && root->key[i] < temp->key[i]) {
+            if (root->right == nullptr)
+                root->right = temp;
+            else
+                Insert(root->right, temp);
+        }
+    }
+}
+
+// Preorder traversal function
+void Preorder(Node* root) {
+    if (root != nullptr) {
+        cout << root->key << ": " << root->meaning << endl;
+        Preorder(root->left);
+        Preorder(root->right);
+    }
+}
+
+// Inorder traversal function
+void Inorder(Node* root) {
+    if (root != nullptr) {
+        Inorder(root->left);
+        cout << root->key << ": " << root->meaning << endl;
+        Inorder(root->right);
+    }
+}
+
+// Postorder traversal function
+void Postorder(Node* root) {
+    if (root != nullptr) {
+        Postorder(root->left);
+        Postorder(root->right);
+        cout << root->key << ": " << root->meaning << endl;
+    }
+}
+
+// Function to search for a key in the dictionary BST
+Node* Search(Node* root, const char* key) {
+    while (root != nullptr) {
+        int l1 = strlen(root->key);
+        int l2 = strlen(key);
+        int l = min(l1, l2);
+        int i = 0;
+        while (i < l && root->key[i] == key[i])
+            i++;
+        
+        if (i == l && l1 == l2)
+            return root;
+        else if (i < l && root->key[i] > key[i])
+            root = root->left;
+        else
+            root = root->right;
+    }
+    return nullptr;
+}
+
+// Function to delete the entire dictionary BST
+void DeleteDictionary(Node* root) {
+    if (root != nullptr) {
+        DeleteDictionary(root->left);
+        DeleteDictionary(root->right);
+        delete root;
+    }
+}
+
+int main() {
+    Node* root = nullptr;
+    char choice;
+    do {
+        char key[50], meaning[100];
+        cout << "Enter key: ";
+        cin >> key;
+        cout << "Enter meaning: ";
+        cin.ignore();
+        cin.getline(meaning, 100);
+        Node* temp = new Node(key, meaning);
+        Insert(root, temp);
+        cout << "Do you want to add another word? (y/n): ";
+        cin >> choice;
+    } while (choice == 'y' || choice == 'Y');
+    
+    cout << "Dictionary in Preorder traversal:" << endl;
+    Preorder(root);
+    cout << endl;
+    
+    cout << "Dictionary in Inorder traversal:" << endl;
+    Inorder(root);
+    cout << endl;
+    
+    cout << "Dictionary in Postorder traversal:" << endl;
+    Postorder(root);
+    cout << endl;
+    
+    char searchKey[50];
+    cout << "Enter a key to search: ";
+    cin >> searchKey;
+    Node* foundNode = Search(root, searchKey);
+    if (foundNode != nullptr)
+        cout << "Meaning: " << foundNode->meaning << endl;
+    else
+        cout << "Key not found in the dictionary." << endl;
+    
+    // Deleting the dictionary to free memory
+    DeleteDictionary(root);
+    
+    return 0;
+}
